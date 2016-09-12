@@ -8,6 +8,8 @@
 from sqlparse import tokens as T
 from sqlparse.compat import text_type
 
+from sqlparse import keywords
+
 
 class _CaseFilter(object):
     ttype = None
@@ -18,6 +20,7 @@ class _CaseFilter(object):
 
     def process(self, stream):
         for ttype, value in stream:
+            print "in process: ", value, value.upper() in keywords.KEYWORDS_MODE
             if ttype in self.ttype:
                 value = self.convert(value)
             yield ttype, value

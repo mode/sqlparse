@@ -9,7 +9,6 @@ import re
 
 from sqlparse import tokens
 
-
 def is_keyword(value):
     val = value.upper()
     return (KEYWORDS_COMMON.get(val) or
@@ -792,4 +791,14 @@ KEYWORDS_ORACLE = {
     'TRIGGERS': tokens.Keyword,
 
     'UNLIMITED': tokens.Keyword,
+}
+
+
+KEYWORDS_MODE = {
+    'AND',
+    'BY',
+    'FROM',
+    'JOIN',
+    'ON'
+    'SELECT',
 }
