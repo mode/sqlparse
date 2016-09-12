@@ -20,6 +20,7 @@ class ReindentFilter(object):
         self.wrap_after = wrap_after
         self._curr_stmt = None
         self._last_stmt = None
+        self.mode_flag = 0
 
     def _flatten_up_to_token(self, token):
         """Yields all tokens up to token but excluding current."""
@@ -47,9 +48,22 @@ class ReindentFilter(object):
     def _next_token(self, tlist, idx=-1):
         split_words = ('FROM', 'STRAIGHT_JOIN$', 'JOIN$', 'AND', 'OR',
                        'GROUP', 'ORDER', 'UNION', 'VALUES',
-                       'SET', 'BETWEEN', 'EXCEPT', 'HAVING')
+                       'SET', 'BETWEEN', 'EXCEPT', 'HAVING', 'ON')
         m_split = T.Keyword, split_words, True
         tidx, token = tlist.token_next_by(m=m_split, idx=idx)
+
+        # joshwitz - so ugly
+        if token and token.normalized == 'ON':
+            self.indent += 1
+            self.mode_flag = 1
+
+        # joshwitz - even worse
+        if (self.mode_flag
+                and token
+                and token.normalized != 'ON'
+                and token.normalized != 'AND'):
+            self.indent -= 1
+            self.mode_flag = 0
 
         if token and token.normalized == 'BETWEEN':
             tidx, token = self._next_token(tlist, tidx)
