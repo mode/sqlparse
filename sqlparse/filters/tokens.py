@@ -20,8 +20,8 @@ class _CaseFilter(object):
 
     def process(self, stream):
         for ttype, value in stream:
-            print "in process: ", value, value.upper() in keywords.KEYWORDS_MODE
-            if ttype in self.ttype:
+            if (ttype in self.ttype
+                  and value.upper() in keywords.KEYWORDS_MODE):
                 value = self.convert(value)
             yield ttype, value
 
