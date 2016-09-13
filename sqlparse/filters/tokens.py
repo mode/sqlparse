@@ -21,7 +21,7 @@ class _CaseFilter(object):
     def process(self, stream):
         for ttype, value in stream:
             if (ttype in self.ttype
-                  and value.upper() in keywords.KEYWORDS_MODE):
+                    and value.upper() in keywords.KEYWORDS_MODE):
                 value = self.convert(value)
             yield ttype, value
 
