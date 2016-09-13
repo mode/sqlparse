@@ -75,12 +75,12 @@ Parsing::
 """
 
 setup(
-    name='sqlparse',
+    name='mode-sqlparse',
     version=get_version(),
     author='Andi Albrecht',
     author_email='albrecht.andi@gmail.com',
-    url='https://github.com/andialbrecht/sqlparse',
-    description='Non-validating SQL parser',
+    url='https://github.com/mode/sqlparse',
+    description='Temproray Fork of Andis Non-validating SQL parser',
     long_description=LONG_DESCRIPTION,
     license='BSD',
     classifiers=[
