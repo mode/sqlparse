@@ -116,6 +116,19 @@ class ReindentFilter(object):
         with indent(self):
             self._process_default(tlist)
 
+    def _process_form(self, tlist):
+        print "in process_form", self, tlist
+
+        tidx, token = tlist.token_next_by(m=(T.Punctuation, '{% form %}'))
+        tlist.insert_after(tidx, self.nl())
+        tlist.insert_after(tidx, self.nl())
+        tlist.insert_before(tidx, self.nl())
+        tlist.insert_before(tidx, self.nl())
+
+        tidx, token = tlist.token_next_by(m=(T.Punctuation, '{% endform %}'))
+        tlist.insert_before(tidx, self.nl())
+        tlist.insert_before(tidx, self.nl())
+
     def _process_parenthesis(self, tlist):
         ttypes = T.Keyword.DML, T.Keyword.DDL
         _, is_dml_dll = tlist.token_next_by(t=ttypes)

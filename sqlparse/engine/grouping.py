@@ -56,6 +56,9 @@ def group_brackets(tlist):
 def group_parenthesis(tlist):
     _group_matching(tlist, sql.Parenthesis)
 
+def group_form(tlist):
+    _group_matching(tlist, sql.Form)
+
 
 def group_case(tlist):
     _group_matching(tlist, sql.Case)
@@ -202,7 +205,7 @@ def group_arrays(tlist):
 
 def group_operator(tlist):
     ttypes = T_NUMERICAL + T_STRING + T_NAME
-    sqlcls = (sql.SquareBrackets, sql.Parenthesis, sql.Function,
+    sqlcls = (sql.SquareBrackets, sql.Parenthesis, sql.Function, sql.Form,
               sql.Identifier, sql.Operation)
 
     def match(token):
@@ -273,7 +276,7 @@ def group_where(tlist):
 
 @recurse()
 def group_aliased(tlist):
-    I_ALIAS = (sql.Parenthesis, sql.Function, sql.Case, sql.Identifier,
+    I_ALIAS = (sql.Parenthesis, sql.Function, sql.Case, sql.Identifier, sql.Form,
                sql.Operation)
 
     tidx, token = tlist.token_next_by(i=I_ALIAS, t=T.Number)
@@ -333,6 +336,7 @@ def group(stmt):
         # _group_matching
         group_brackets,
         group_parenthesis,
+        group_form,
         group_case,
         group_if,
         group_for,

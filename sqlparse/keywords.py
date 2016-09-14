@@ -77,6 +77,9 @@ SQL_REGEX = {
 
         (r'[_A-Z]\w*', is_keyword),
 
+        #(r'{%|%}', tokens.Punctuation),
+        (r'{% form %}|{% endform %}', tokens.Punctuation),
+
         (r'[;:()\[\],\.]', tokens.Punctuation),
         (r'[<>=~!]+', tokens.Operator.Comparison),
         (r'[+/@#%^&|`?^-]+', tokens.Operator),

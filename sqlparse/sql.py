@@ -477,6 +477,15 @@ class Parenthesis(TokenList):
     def _groupable_tokens(self):
         return self.tokens[1:-1]
 
+class Form(TokenList):
+    """Tokens between form and endform."""
+    M_OPEN = T.Punctuation, '{% form %}'
+    M_CLOSE = T.Punctuation, '{% endform %}'
+
+    @property
+    def _groupable_tokens(self):
+        return self.tokens[1:-1]
+
 
 class SquareBrackets(TokenList):
     """Tokens between square brackets"""
