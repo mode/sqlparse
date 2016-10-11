@@ -3,7 +3,7 @@
 # Copyright (C) 2016 Andi Albrecht, albrecht.andi@gmail.com
 #
 # This module is part of python-sqlparse and is released under
-# the BSD License: http://www.opensource.org/licenses/bsd-license.php
+# the BSD License: https://opensource.org/licenses/BSD-3-Clause
 
 from sqlparse import sql
 from sqlparse import tokens as T
@@ -343,9 +343,9 @@ def group(stmt):
         group_period,
         group_arrays,
         group_identifier,
-        group_operator,
         group_order,
         group_typecasts,
+        group_operator,
         group_as,
         group_aliased,
         group_assignment,

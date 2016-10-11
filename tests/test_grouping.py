@@ -64,6 +64,20 @@ def test_grouping_identifiers():
     assert identifiers[0].get_alias() == "col"
 
 
+@pytest.mark.parametrize('s', [
+    'foo, bar',
+    'sum(a), sum(b)',
+    'sum(a) as x, b as y',
+    'sum(a)::integer, b',
+    'sum(a)/count(b) as x, y',
+    'sum(a)::integer as x, y',
+    'sum(a)::integer/count(b) as x, y',  # issue297
+])
+def test_group_identifier_list(s):
+    parsed = sqlparse.parse(s)[0]
+    assert isinstance(parsed.tokens[0], sql.IdentifierList)
+
+
 def test_grouping_identifier_wildcard():
     p = sqlparse.parse('a.*, b.id')[0]
     assert isinstance(p.tokens[0], sql.IdentifierList)
@@ -196,16 +210,15 @@ def test_returning_kw_ends_where_clause():
     assert p.tokens[7].value == 'returning'
 
 
-def test_grouping_typecast():
-    s = 'select foo::integer from bar'
-    p = sqlparse.parse(s)[0]
-    assert str(p) == s
-    assert p.tokens[2].get_typecast() == 'integer'
-    assert p.tokens[2].get_name() == 'foo'
-    s = 'select (current_database())::information_schema.sql_identifier'
-    p = sqlparse.parse(s)[0]
-    assert str(p) == s
-    assert (p.tokens[2].get_typecast() == 'information_schema.sql_identifier')
+@pytest.mark.parametrize('sql, expected', [
+    # note: typecast needs to be 2nd token for this test
+    ('select foo::integer from bar', 'integer'),
+    ('select (current_database())::information_schema.sql_identifier',
+     'information_schema.sql_identifier'),
+])
+def test_grouping_typecast(sql, expected):
+    p = sqlparse.parse(sql)[0]
+    assert p.tokens[2].get_typecast() == expected
 
 
 def test_grouping_alias():

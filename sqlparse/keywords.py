@@ -3,7 +3,7 @@
 # Copyright (C) 2016 Andi Albrecht, albrecht.andi@gmail.com
 #
 # This module is part of python-sqlparse and is released under
-# the BSD License: http://www.opensource.org/licenses/bsd-license.php
+# the BSD License: https://opensource.org/licenses/BSD-3-Clause
 
 import re
 
@@ -38,7 +38,7 @@ SQL_REGEX = {
 
         (r'\?', tokens.Name.Placeholder),
         (r'%(\(\w+\))?s', tokens.Name.Placeholder),
-        (r'[$:?]\w+', tokens.Name.Placeholder),
+        (r'(?<!\w)[$:?]\w+', tokens.Name.Placeholder),
 
         # FIXME(andi): VALUES shouldn't be listed here
         # see https://github.com/andialbrecht/sqlparse/pull/64
@@ -72,10 +72,11 @@ SQL_REGEX = {
          r'|(CROSS\s+|NATURAL\s+)?)?JOIN\b', tokens.Keyword),
         (r'END(\s+IF|\s+LOOP|\s+WHILE)?\b', tokens.Keyword),
         (r'NOT\s+NULL\b', tokens.Keyword),
+        (r'UNION\s+ALL\b', tokens.Keyword),
         (r'CREATE(\s+OR\s+REPLACE)?\b', tokens.Keyword.DDL),
         (r'DOUBLE\s+PRECISION\b', tokens.Name.Builtin),
 
-        (r'[_A-Z]\w*', is_keyword),
+        (r'[_A-Z][_$#\w]*', is_keyword),
 
         (r'[;:()\[\],\.]', tokens.Punctuation),
         (r'[<>=~!]+', tokens.Operator.Comparison),
